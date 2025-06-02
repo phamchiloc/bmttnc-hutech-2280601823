@@ -5,8 +5,14 @@ qlsv = QuanLySinhVien()
 while (1 == 1):
     print("\nCHƯƠNG TRÌNH QUẢN LÝ SINH VIÊN")
     print("***********************MENU***********************")
-    print("1.thêm sinh viên                               ***")
-    print("2.cập nhật thong tin sinh viên bơi ID          ***")
+    @app.route('/api/vigenere/decrypt', methods = ['POST'])
+    def Vigenere_decrypt():
+        data = request.json
+        cipher_text = data['cipher_text']
+        key = data['key']
+        decrypted_text = vigenere_cipher.vigenere_decrypt(cipher_text, key)
+        return jsonify({'encrypted_text': decrypted_text})  # Sai key name    print("1.thêm sinh viên                               ***")
+    print("2.cập nhật thông tin sinh viên bởi ID          ***")
     print("3.xóa sinh viên bơi ID                         ***")
     print("4.tìm kiếm sinh viên theo tên                  ***") 
     print("5.sắp xếp danh sách sinh viên theo điểm trung bình")

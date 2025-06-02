@@ -50,7 +50,7 @@ def Vigenere_decrypt():
     cipher_text = data['cipher_text']
     key = data['key']
     decrypted_text = vigenere_cipher.vigenere_decrypt(cipher_text, key)
-    return jsonify({'encrypted_text': decrypted_text})
+    return jsonify({'decrypted_text': decrypted_text})
 
 @app.route('/api/railfence/encrypt', methods = ['POST'])
 def railfence_encrypt():
