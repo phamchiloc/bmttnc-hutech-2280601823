@@ -3,6 +3,10 @@ from cipher.caesar import CaesarCipher
 from cipher.playfair import PlayfairCipher
 from cipher.vigenere import VigenereCipher
 from cipher.railfence import RailFenceCipher
+import os
+import sys
+import subprocess
+import threading
 
 app = Flask(__name__)
 
@@ -98,30 +102,38 @@ def railfence_decrypt():
 @app.route("/open-form/<cipher_type>")
 def open_form(cipher_type):
     try:
-        import subprocess
-        import os
-        import sys
-        import threading
-
-        # Đường dẫn đến thư mục lab-03
-        lab03_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../lab-03'))
+        print(f"Đang mở form {cipher_type}...")
         
-        # Map tên app với file tương ứng
+        # Đường dẫn đến thư mục lab-03
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        lab03_path = os.path.abspath(os.path.join(current_dir, '../../lab-03'))
+        print(f"Đường dẫn lab-03: {lab03_path}")
+        
+        # Map tên cipher với file tương ứng
         app_map = {
             'caesar': 'caesar_cipher.py',
             'playfair': 'playfair_cipher.py',
             'vigenere': 'vigenere_cipher.py',
             'railfence': 'railfence_cipher.py'
         }
+        
         if cipher_type not in app_map:
-            return jsonify({'status': 'error', 'message': 'Ứng dụng không tồn tại'}), 404
+            print(f"Không tìm thấy ứng dụng: {cipher_type}")
+            return jsonify({'status': 'error', 'message': f'Không tìm thấy ứng dụng: {cipher_type}'}), 404
         
         app_file = app_map[cipher_type]
         app_path = os.path.join(lab03_path, app_file)
+        print(f"Đường dẫn ứng dụng: {app_path}")
+        
+        if not os.path.exists(app_path):
+            print(f"File không tồn tại: {app_path}")
+            return jsonify({'status': 'error', 'message': f'File không tồn tại: {app_path}'}), 404
         
         # Chạy ứng dụng PyQt trong một thread riêng biệt
         def run_app():
+            print(f"Chạy lệnh: python {app_file}")
             subprocess.Popen([sys.executable, app_path], cwd=lab03_path)
+            print(f"Đã khởi động form {cipher_type}")
         
         thread = threading.Thread(target=run_app)
         thread.daemon = True
@@ -129,6 +141,7 @@ def open_form(cipher_type):
         
         return jsonify({'status': 'success', 'message': f'Đã mở form {cipher_type.title()} thành công'})
     except Exception as e:
+        print(f"Lỗi: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 if __name__ == "__main__":

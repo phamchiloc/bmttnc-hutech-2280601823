@@ -20,7 +20,7 @@ class MyApp(QMainWindow):
         if not plain_text:
             QMessageBox.warning(self, "Lỗi", "Plain text không được để trống!")
             return
-        url = "http://127.0.0.1:5050/api/vigenere/encrypt"
+        url = "http://127.0.0.1:5000/api/vigenere/encrypt"
         payload = {
             "plain_text": plain_text,
             "key": key_text
@@ -53,7 +53,7 @@ class MyApp(QMainWindow):
         if not cipher_text:
             QMessageBox.warning(self, "Lỗi", "Cipher text không được để trống!")
             return
-        url = "http://127.0.0.1:5050/api/vigenere/decrypt"
+        url = "http://127.0.0.1:5000/api/vigenere/decrypt"
         payload = {
             "cipher_text": cipher_text,
             "key": key_text
