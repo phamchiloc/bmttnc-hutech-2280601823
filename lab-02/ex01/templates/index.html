@@ -88,15 +88,18 @@
                 type: "GET",
                 success: function(response) {
                     if (response.status === "success") {
+                        $("#status-message").removeClass("alert-danger").addClass("alert-success");
                         $("#status-message").text("Đã mở form " + cipherType + " thành công!");
                         setTimeout(function() {
                             $("#status-message").fadeOut(1000);
                         }, 3000);
                     } else {
+                        $("#status-message").removeClass("alert-success").addClass("alert-danger");
                         $("#status-message").text("Lỗi: " + response.message);
                     }
                 },
                 error: function(xhr, status, error) {
+                    $("#status-message").removeClass("alert-success").addClass("alert-danger");
                     $("#status-message").text("Lỗi khi mở form: " + error);
                 }
             });
